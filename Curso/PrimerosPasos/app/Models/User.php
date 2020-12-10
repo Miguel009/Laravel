@@ -20,8 +20,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username',
     ];
 
+    public function profile(){
+        return $this->HasOne(Profile::class);
+    }
+    public function posts(){
+        return $this->HasMany(Post::class);
+    }
     /**
      * The attributes that should be hidden for arrays.
      *
