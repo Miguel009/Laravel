@@ -52,10 +52,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    /*Aqui esta es una nueva funcion la cual se ejecuta cuando nosotros digamos o mejor dicho al momento de booteo */
     protected static function boot(){
         parent::boot();
-
+        /*entonces al momento de booteo o que se utilize este modelo lo que hacemos es decirle que cuando se haya creado el usuario le cree un perfil solo con el tittulo del profile
+        y ademas mande el email de bienvenida */
         static::created(function ($user){
             $user->profile()->create([
                 'title'=>$user->username
