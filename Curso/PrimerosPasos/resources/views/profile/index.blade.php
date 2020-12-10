@@ -11,9 +11,11 @@
             
             <div class="d-flex pb-3 align-items-center">
                 <h4 class="mb-n2">{{$user->username}}</h4>
-                <follow user="{{ $user->id }}"></follow>
+                <!--Aqui lo que estamos haciendo es que mandamos a llamar a nuestro componente follow el cual toma dos argumentos que seria el argumento de follows que es si se esta siguiendo a la persona o no
+                y el id del usuario a que se esta viendo-->
+                <follow user-id="{{ $user->id }}" follows="{{ $follows }}"></follow>
             </div>
-            
+            <!--AQUI LO QUE estamos haciendo es verificar que si la politica de update es correcta sino pues entonces retornar un null-->
             @can ('update', $user->profile)
             <a href="/p/create">Añadir Post</a>
             @endcan
@@ -23,9 +25,11 @@
             <a href="/profile/{{$user->id}}/edit">Editar Perfil</a>
             @endcan
             <div class="d-flex">
-                <div class="pr-5"><strong>{{$user->posts->count()}}</strong> posts</div>
-                <div class="pr-5"><strong>1</strong> followers</div>
-                <div class="pr-5"><strong>15</strong> following</div>
+            <!--Aqui lo que hemos hecho es agregar las variables que tenemos en nuestro index de profile controller para que estos datos se guarden en la cache
+            y evitar hacer request cada segundo-->
+                <div class="pr-5"><strong>{{$postCount}}</strong> posts</div>
+                <div class="pr-5"><strong>{{$followersCount}}</strong> followers</div>
+                <div class="pr-5"><strong>{{$followingCount}}</strong> following</div>
             </div>
             <div class="font-weight-bold pt-4">{{$user->profile->title}}</div>
             <div>{{$user->profile->description}}</div>                                                                                                                                                                                       <!--Aqui al usar el ?? significa que es un or ya que si la url es null entonces mostraria el otro dato-->                   

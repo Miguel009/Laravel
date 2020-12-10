@@ -1917,16 +1917,37 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user'],
+  props: ['userId', 'follows'],
   mounted: function mounted() {
     console.log('Component mounted.');
   },
+
+  /*aqui se manda a llamar un data el cual manda o devuelve un argumento el cual es status que va a ser false o true dependiendo de lo que devuelva follows */
+  data: function data() {
+    return {
+      status: this.follows
+    };
+  },
   methods: {
     followUser: function followUser() {
-      console.log(this.user);
-      axios.post('/follow/' + this.user).then(function (response) {
-        alert(response.data);
+      var _this = this;
+
+      /*aqui lo que hace es que hace un post utilizando axios el cual realiza la accion de seguir o no y segun la respuesta como es un pivote de solo true o false 
+      entonces pasaria solo esos dos tipos de datos y entonces cambiamos estatus de dato */
+      console.log(this.userId);
+      axios.post('/follow/' + this.userId).then(function (response) {
+        _this.status = !_this.status;
+      })["catch"](function (error) {
+        /*Aqui lo que manejamos es que si no estamos en una cuenta entonces solo */
+        if (error.response.status == 401) {
+          window.location = '/login';
+        }
       });
+    }
+  },
+  computed: {
+    buttonText: function buttonText() {
+      return this.status ? 'Dejar de Seguir' : 'seguir';
     }
   }
 });
@@ -37524,11 +37545,11 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "button",
-      { staticClass: "btn btn-primary ml-4", on: { click: _vm.followUser } },
-      [_vm._v("\n        Seguir\n    ")]
-    )
+    _c("button", {
+      staticClass: "btn btn-primary ml-4",
+      domProps: { textContent: _vm._s(_vm.buttonText) },
+      on: { click: _vm.followUser }
+    })
   ])
 }
 var staticRenderFns = []

@@ -18,4 +18,8 @@ class Profile extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    /*AQUI ES DONDE ESTA NUESTRA RELACION DE MUCHO A MUCHOS EN LA QUE EXISTE NUESTRA TABLA PIVOTE */
+    public function followers(){
+        return $this->belongsToMany(User::class);
+    }
 }

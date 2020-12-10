@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/email', function(){
+    return new App\Mail\NewUserBienvenidaMail();
 });
 
 Auth::routes();
@@ -32,3 +31,5 @@ Route::get('/profile/{user}/edit', [App\Http\Controllers\ProfileControllerr::cla
 Route::patch('/profile/{user}', [App\Http\Controllers\ProfileControllerr::class, 'update']);
 
 Route::post('follow/{user}', [App\Http\Controllers\FollowsController::class, 'store']);
+
+Route::get('/', [App\Http\Controllers\PostController::class, 'index']);

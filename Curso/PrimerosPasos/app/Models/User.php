@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -28,6 +29,10 @@ class User extends Authenticatable
     }
     public function posts(){
         return $this->HasMany(Post::class)->orderBy('created_at', 'DESC');
+    }
+    /*AQUI ES DONDE ESTA NUESTRA RELACION DE MUCHO A MUCHOS EN LA QUE EXISTE NUESTRA TABLA PIVOTE */
+    public function following(){
+        return $this->belongsToMany(Profile::class);
     }
     /**
      * The attributes that should be hidden for arrays.
@@ -55,6 +60,8 @@ class User extends Authenticatable
             $user->profile()->create([
                 'title'=>$user->username
             ]);
+
+            Mail::to($user->email)->send(new \App\Mail\NewUserBienvenidaMail());
         });
     }
 }
