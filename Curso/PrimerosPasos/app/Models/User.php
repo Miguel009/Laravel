@@ -27,7 +27,7 @@ class User extends Authenticatable
         return $this->HasOne(Profile::class);
     }
     public function posts(){
-        return $this->HasMany(Post::class);
+        return $this->HasMany(Post::class)->orderBy('created_at', 'DESC');
     }
     /**
      * The attributes that should be hidden for arrays.
@@ -47,4 +47,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function boot(){
+        parent::boot();
+
+        static::created(function ($user){
+            $user->profile()->create([
+                'title'=>$user->username
+            ]);
+        });
+    }
 }
